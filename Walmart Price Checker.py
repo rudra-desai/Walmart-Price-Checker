@@ -14,8 +14,6 @@ def find_nth_occurence(a, b, n):
 
 
 title_or_link = int(input("Enter 1 to search the price by title or 2 to search the price by link: "))
-name = ""
-f = open("test.txt","w")
 
 if title_or_link == 2:
     url = input("Paste the url from walmart: ")
