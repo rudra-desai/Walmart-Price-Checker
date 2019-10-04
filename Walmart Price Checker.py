@@ -4,6 +4,7 @@ import time
 from bs4 import BeautifulSoup as soup
 import re
 
+
 def find_nth_occurence(a, b, n):
     start = a.find(b)
     while start >= 0 and n > 1:
@@ -14,6 +15,7 @@ def find_nth_occurence(a, b, n):
 
 title_or_link = int(input("Enter 1 to search the price by title or 2 to search the price by link: "))
 name = ""
+f = open("test.txt","w")
 
 if title_or_link == 2:
     url = input("Paste the url from walmart: ")
@@ -36,7 +38,9 @@ elif title_or_link == 1:
     uClient.close()
     links_with_text = []
     soup = soup(page, "html.parser")
-    nameLine = soup.findAll('a', attrs={'href': re.compile("^/ip")})
+    nameLine = soup.findAll('a', attrs={'class': "product-title-link line-clamp line-clamp-2"})
+    f.write(str(nameLine))
+    f.close()
     allProducts = {}
     prodcutName = ""
     counter = 1
@@ -44,8 +48,9 @@ elif title_or_link == 1:
         link_with_name = str(links.get('href'))
         actualLink = str("https://www.walmart.com" + link_with_name)
         prodcutName = (link_with_name[link_with_name.index("ip/")+3 : find_nth_occurence(link_with_name, "/", 3)])
-        allProducts[str(counter) + ": " + prodcutName] = actualLink
-        counter+=1
+        if (str(counter-1) + ": " + prodcutName) not in allProducts.keys():
+            allProducts[str(counter) + ": " + prodcutName] = actualLink
+            counter+=1
     for key in allProducts:
         print(key)
     whichOne = input("Which product would you like to check the price for?: ")
