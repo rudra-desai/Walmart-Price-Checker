@@ -4,10 +4,10 @@ import time
 from bs4 import BeautifulSoup as soup
 import re
 
-def find_nth_overlapping(haystack, needle, n):
-    start = haystack.find(needle)
+def find_nth_occurence(a, b, n):
+    start = a.find(b)
     while start >= 0 and n > 1:
-        start = haystack.find(needle, start+1)
+        start = a.find(b, start+1)
         n -= 1
     return start
 
@@ -43,7 +43,7 @@ elif title_or_link == 1:
     for links in soup.findAll('a', attrs={'href': re.compile("^/ip")}):
         link_with_name = str(links.get('href'))
         actualLink = str("https://www.walmart.com" + link_with_name)
-        prodcutName = (link_with_name[link_with_name.index("ip/")+3 : find_nth_overlapping(link_with_name, "/", 3)])
+        prodcutName = (link_with_name[link_with_name.index("ip/")+3 : find_nth_occurence(link_with_name, "/", 3)])
         allProducts[str(counter) + ": " + prodcutName] = actualLink
         counter+=1
     for key in allProducts:
@@ -63,7 +63,3 @@ elif title_or_link == 1:
     price = float(priceLine[priceLine.index("$")+1:priceLine.index("</")])
     print("\n" + name)
     print (price)
-
-
-
-   
